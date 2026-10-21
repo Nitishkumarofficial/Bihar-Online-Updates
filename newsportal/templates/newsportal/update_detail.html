@@ -1,0 +1,229 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{ update.short_description|striptags|truncatechars:160 }}">
+    <title>{{ update.title }} | Bihar Online Updates</title>
+    <link rel="stylesheet" href="{% static 'newsportal/style.css' %}">
+</head>
+<body class="detail-page">
+    {% if admin_preview %}
+    <aside class="admin-preview-banner" role="status">
+        <div>
+            <strong>Administrator preview</strong>
+            <span>This page is private and is not visible to public visitors.</span>
+        </div>
+        <a href="{% url 'admin:newsportal_newsupdate_change' update.pk %}">Return to editing</a>
+    </aside>
+    {% endif %}
+    <main class="container">
+        <nav class="detail-breadcrumbs" aria-label="Breadcrumb">
+            <a href="{% url 'home' %}">Home</a>
+            <span aria-hidden="true">/</span>
+            <a href="{% url 'home' %}?category={{ update.category|urlencode }}#updates">{{ update.get_category_display }}</a>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">{{ update.title }}</span>
+        </nav>
+
+        <div class="detail-layout">
+            <article class="detail-main">
+                <span class="update-category">{{ update.get_category_display }}</span>
+                <h1>{{ update.title }}</h1>
+                <div class="detail-meta">
+                    <span>Published: <time datetime="{{ update.published_date|date:'Y-m-d' }}">{{ update.published_date|date:"M j, Y" }}</time></span>
+                    {% if update.updated_at %}
+                    <span>Last updated: <time datetime="{{ update.updated_at|date:'c' }}">{{ update.updated_at|date:"M j, Y" }}</time></span>
+                    {% endif %}
+                </div>
+
+                <div class="detail-description">
+                    {% if update.full_description %}
+                        {{ update.full_description|linebreaks }}
+                    {% else %}
+                        {{ update.short_description|linebreaks }}
+                    {% endif %}
+                </div>
+
+                {% if update.category == 'job' %}
+                    {% if update.organization %}
+                    <section class="detail-facts">
+                        <h2>Organization</h2>
+                        <p>{{ update.organization|linebreaks }}</p>
+                    </section>
+                    {% endif %}
+                    {% if update.total_vacancies %}
+                    <section class="detail-facts">
+                        <h2>Total vacancies</h2>
+                        <p>{{ update.total_vacancies|linebreaks }}</p>
+                    </section>
+                    {% endif %}
+                    {% if update.eligibility %}
+                    <section class="detail-facts">
+                        <h2>Eligibility / qualification</h2>
+                        <p>{{ update.eligibility|linebreaks }}</p>
+                    </section>
+                    {% endif %}
+                    {% if update.age_limit %}
+                    <section class="detail-facts">
+                        <h2>Age limit</h2>
+                        <p>{{ update.age_limit|linebreaks }}</p>
+                    </section>
+                    {% endif %}
+                    {% if update.application_fee %}
+                    <section class="detail-facts">
+                        <h2>Application fee</h2>
+                        <p>{{ update.application_fee|linebreaks }}</p>
+                    </section>
+                    {% endif %}
+                    {% if update.important_dates or update.last_date %}
+                    <section class="detail-facts">
+                        <h2>Important dates</h2>
+                        {% if update.important_dates %}<p>{{ update.important_dates|linebreaks }}</p>{% endif %}
+                        {% if update.last_date %}<p><strong>Last date:</strong> {{ update.last_date|date:"M j, Y" }}</p>{% endif %}
+                    </section>
+                    {% endif %}
+                    {% if update.selection_process %}
+                    <section class="detail-facts">
+                        <h2>Selection process</h2>
+                        <p>{{ update.selection_process|linebreaks }}</p>
+                    </section>
+                    {% endif %}
+                {% elif update.category == 'scholarship' %}
+                    {% if update.organization %}
+                    <section class="detail-facts">
+                        <h2>Scholarship provider</h2>
+                        <p>{{ update.organization|linebreaks }}</p>
+                    </section>
+                    {% endif %}
+                    {% if update.eligibility %}
+                    <section class="detail-facts">
+                        <h2>Eligibility</h2>
+                        <p>{{ update.eligibility|linebreaks }}</p>
+                    </section>
+                    {% endif %}
+                    {% if update.important_dates %}
+                    <section class="detail-facts">
+                        <h2>Important dates</h2>
+                        <p>{{ update.important_dates|linebreaks }}</p>
+                    </section>
+                    {% endif %}
+                {% elif update.category == 'admission' %}
+                    {% if update.organization %}
+                    <section class="detail-facts">
+                        <h2>Institution</h2>
+                        <p>{{ update.organization|linebreaks }}</p>
+                    </section>
+                    {% endif %}
+                    {% if update.eligibility %}
+                    <section class="detail-facts">
+                        <h2>Eligibility</h2>
+                        <p>{{ update.eligibility|linebreaks }}</p>
+                    </section>
+                    {% endif %}
+                    {% if update.application_fee %}
+                    <section class="detail-facts">
+                        <h2>Application fee</h2>
+                        <p>{{ update.application_fee|linebreaks }}</p>
+                    </section>
+                    {% endif %}
+                    {% if update.important_dates %}
+                    <section class="detail-facts">
+                        <h2>Important dates</h2>
+                        <p>{{ update.important_dates|linebreaks }}</p>
+                    </section>
+                    {% endif %}
+                {% elif update.category == 'result' or update.category == 'admit_card' %}
+                    {% if update.organization %}
+                    <section class="detail-facts">
+                        <h2>Examining organization</h2>
+                        <p>{{ update.organization|linebreaks }}</p>
+                    </section>
+                    {% endif %}
+                    {% if update.important_dates %}
+                    <section class="detail-facts">
+                        <h2>Important dates</h2>
+                        <p>{{ update.important_dates|linebreaks }}</p>
+                    </section>
+                    {% endif %}
+                {% elif update.category == 'scheme' %}
+                    {% if update.organization %}
+                    <section class="detail-facts">
+                        <h2>Department / scheme provider</h2>
+                        <p>{{ update.organization|linebreaks }}</p>
+                    </section>
+                    {% endif %}
+                    {% if update.eligibility %}
+                    <section class="detail-facts">
+                        <h2>Eligibility</h2>
+                        <p>{{ update.eligibility|linebreaks }}</p>
+                    </section>
+                    {% endif %}
+                    {% if update.important_dates %}
+                    <section class="detail-facts">
+                        <h2>Important dates</h2>
+                        <p>{{ update.important_dates|linebreaks }}</p>
+                    </section>
+                    {% endif %}
+                {% endif %}
+
+                {% if update.last_date and update.category != 'job' %}
+                <p class="detail-deadline"><strong>Last date:</strong> {{ update.last_date|date:"M j, Y" }}</p>
+                {% endif %}
+
+                {% if update.official_link %}
+                <div class="detail-actions">
+                    <a class="official-link-btn" href="{{ update.official_link }}" target="_blank" rel="noopener noreferrer">
+                        {% if update.category == 'job' %}Official notification / Apply{% elif update.category == 'result' %}Official result{% elif update.category == 'admission' %}Official admission link{% elif update.category == 'scholarship' %}Official scholarship link{% else %}Official notification / website{% endif %}
+                    </a>
+                </div>
+                {% endif %}
+
+                <div
+                    class="detail-share"
+                    aria-label="Share this update"
+                    data-share-title="{{ share_title }}"
+                    data-share-url="{{ share_url }}"
+                >
+                    <a class="whatsapp-share" data-share-platform="whatsapp" href="{{ share_links.whatsapp }}" target="_blank" rel="noopener noreferrer">
+                        WhatsApp
+                    </a>
+                    <a data-share-platform="telegram" href="{{ share_links.telegram }}" target="_blank" rel="noopener noreferrer">
+                        Telegram
+                    </a>
+                    <a data-share-platform="facebook" href="{{ share_links.facebook }}" target="_blank" rel="noopener noreferrer">
+                        Facebook
+                    </a>
+                    <a data-share-platform="x" href="{{ share_links.x }}" target="_blank" rel="noopener noreferrer">
+                        X
+                    </a>
+                    <a data-share-platform="linkedin" href="{{ share_links.linkedin }}" target="_blank" rel="noopener noreferrer">
+                        LinkedIn
+                    </a>
+                    <button type="button" id="nativeShareUpdate">More share options</button>
+                    <button type="button" id="copyUpdateLink">Copy link</button>
+                    <span class="copy-status" id="copyStatus" role="status" aria-live="polite"></span>
+                </div>
+
+                <div class="detail-footer">
+                    <a class="detail-back-category" href="{% url 'home' %}?category={{ update.category|urlencode }}#updates">← Back to {{ update.get_category_display }}</a>
+                </div>
+            </article>
+
+            {% if related_updates %}
+            <aside class="related-updates" aria-labelledby="relatedUpdatesHeading">
+                <h2 id="relatedUpdatesHeading">Related updates</h2>
+                {% for related in related_updates %}
+                <div class="related-update">
+                    <a href="{{ related.get_absolute_url }}">{{ related.title }}</a>
+                    <time datetime="{{ related.published_date|date:'Y-m-d' }}">{{ related.published_date|date:"M j, Y" }}</time>
+                </div>
+                {% endfor %}
+            </aside>
+            {% endif %}
+        </div>
+    </main>
+    <script src="{% static 'newsportal/script.js' %}"></script>
+</body>
+</html>

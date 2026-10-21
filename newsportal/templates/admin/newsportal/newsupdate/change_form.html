@@ -1,0 +1,33 @@
+{% extends "admin/change_form.html" %}
+{% load admin_urls %}
+
+{% block object-tools-items %}
+{% if original %}
+    <li><a href="{% url 'admin:newsportal_newsupdate_preview' original.pk %}" class="previewlink" target="_blank" rel="noopener noreferrer">Preview</a></li>
+{% endif %}
+{{ block.super }}
+{% endblock %}
+
+{% block after_field_sets %}
+{{ block.super }}
+<aside class="admin-placement-guide" aria-labelledby="admin-placement-heading">
+    <h2 id="admin-placement-heading">Where this update appears</h2>
+    <ul>
+        <li>When published, this update appears in the homepage latest-updates feed and the public View All Updates page. The category is available as a filter there.</li>
+        <li>Short description is used on update cards. The detail page uses the full description, falling back to the short description when needed.</li>
+        <li>The detail page displays the fields supported for the selected category and shows an official-link button when an official URL is entered.</li>
+        <li>The homepage's lower category promotion blocks are static, not generated from these records. This model does not support image or attachment uploads.</li>
+    </ul>
+    {% if not original %}
+    <p>Save this update first to open its preview. A preview is available only to authorized administrators.</p>
+    {% endif %}
+</aside>
+{% endblock %}
+
+{% block submit_buttons_bottom %}
+{{ block.super }}
+<div class="submit-row dashboard-publish-buttons">
+    <input type="submit" name="_save_draft" value="Save as draft">
+    <input type="submit" name="_publish" value="Publish">
+</div>
+{% endblock %}

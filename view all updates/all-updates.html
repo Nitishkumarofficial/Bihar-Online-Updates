@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>All Latest Updates | Bihar Online Updates</title>
+
+    <link rel="stylesheet" href="../style.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+    .all-updates-header {
+        background: #0756a4 !important;
+        color: white !important;
+        padding: 40px 20px !important;
+    }
+
+    .all-updates-title h1 {
+        color: white !important;
+        font-size: 36px !important;
+    }
+
+    .all-updates-page article {
+        background: white !important;
+        padding: 25px !important;
+        margin: 20px auto !important;
+        border-radius: 12px !important;
+        box-shadow: 0 4px 15px #00000015 !important;
+    }
+
+    /* Update Cards Design */
+
+.all-updates-page {
+    background: #f3f6fb;
+    font-family: Arial, sans-serif;
+    color: #243247;
+    line-height: 1.6;
+}
+
+.all-updates-page main {
+    width: 92%;
+    max-width: 1100px;
+    margin: 35px auto;
+}
+
+.all-updates-page article {
+    background: #ffffff;
+    padding: 25px;
+    margin: 22px 0;
+    border-radius: 14px;
+    border-left: 5px solid #087f8c;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease;
+}
+
+.all-updates-page article:hover {
+    transform: translateY(-4px);
+}
+
+.all-updates-page article h2 {
+    color: #0756a4;
+    font-size: 24px;
+    margin-bottom: 12px;
+}
+
+.all-updates-page article p {
+    color: #566579;
+    margin-bottom: 15px;
+}
+
+.all-updates-page article a {
+    display: inline-block;
+    background: #0756a4;
+    color: #ffffff !important;
+    padding: 10px 18px;
+    border-radius: 7px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.all-updates-page article a:hover {
+    background: #087f8c;
+}
+
+.all-updates-page footer {
+    background: #10243e;
+    color: #ffffff;
+    text-align: center;
+    padding: 22px;
+    margin-top: 40px;
+}
+
+@media (max-width: 600px) {
+    .all-updates-page main {
+        width: 94%;
+    }
+
+    .all-updates-page article {
+        padding: 18px;
+    }
+
+    .all-updates-page article h2 {
+        font-size: 21px;
+    }
+}
+
+/* Professional Filter Buttons */
+
+.all-updates-page button {
+    padding: 11px 20px;
+    margin: 5px 4px;
+    border: 1px solid #d1ddeb;
+    border-radius: 25px;
+    background: #ffffff;
+    color: #0756a4;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.all-updates-page button:hover {
+    background: #0756a4;
+    color: #ffffff;
+    border-color: #0756a4;
+    transform: translateY(-2px);
+}
+
+/* Cards Spacing */
+
+.all-updates-page article {
+    max-width: 100%;
+    margin: 20px 0;
+}
+
+/* Better Text Readability */
+
+.all-updates-page article p {
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+/* Mobile Responsive */
+
+@media (max-width: 600px) {
+    .all-updates-page button {
+        padding: 9px 14px;
+        margin: 4px 2px;
+        font-size: 13px;
+    }
+}
+.update-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 25px 0;
+}
+
+.update-filters .filter-btn.active {
+    background: #0756a4;
+    color: #ffffff;
+    border-color: #0756a4;
+}
+
+.update-filters .filter-btn {
+    transition: 0.3s ease;
+}
+</style>
+</head>
+
+<script src="../script.js"></script>
+
+<body class="all-updates-page">
+
+    <header class="all-updates-header">
+        <div class="all-updates-container">
+
+            <a href="../index.html" class="back-home">
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Home
+            </a>
+
+            <div class="all-updates-title">
+                <span>BIHAR ONLINE UPDATES</span>
+                <h1>All Latest Updates</h1>
+                <p>Bihar Government, Jobs, Scholarship, Results, Schemes aur important information</p>
+            </div>
+            <!-- UPDATE FILTER BUTTONS -->
+
+<div class="update-filters">
+
+    <button class="filter-btn active" data-filter="all">
+        All Updates
+    </button>
+
+    <button class="filter-btn" data-filter="government">
+        Government
+    </button>
+
+    <button class="filter-btn" data-filter="jobs">
+        Jobs
+    </button>
+
+    <button class="filter-btn" data-filter="scholarship">
+        Scholarship
+    </button>
+
+    <button class="filter-btn" data-filter="results">
+        Results
+    </button>
+
+</div>
+
+        </div>
+    </header>
+
+
+
+    <!-- ================= UPDATES ================= -->
+
+    <main class="all-updates-container">
+
+        <div class="updates-filter">
+
+            <button class="filter-btn active" data-filter="all">
+                All Updates
+            </button>
+
+            <button class="filter-btn" data-filter="government">
+                Government
+            </button>
+
+            <button class="filter-btn" data-filter="jobs">
+                Jobs
+            </button>
+
+            <button class="filter-btn" data-filter="scholarship">
+                Scholarship
+            </button>
+
+            <button class="filter-btn" data-filter="results">
+                Results
+            </button>
+
+        </div>
+
+
+        <div class="all-updates-grid">
+
+
+            <!-- UPDATE 1 -->
+
+            <article class="all-update-card" data-category="government">
+
+                <div class="all-update-top">
+
+                    <span class="all-update-tag latest-tag">
+                        Latest
+                    </span>
+
+                    <span class="all-update-date">
+                        <i class="fa-regular fa-calendar"></i>
+                        Latest Update
+                    </span>
+
+                </div>
+
+                <h2>Bihar Latest Government Update</h2>
+
+                <p>
+                    Bihar se judi latest government information aur
+                    important announcement ki complete details.
+                </p>
+
+                <a href="updates/updates-1.html"
+                   class="all-read-more">
+
+                    Read Full Update
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </article>
+
+
+
+            <!-- UPDATE 2 -->
+
+            <article class="all-update-card" data-category="jobs">
+
+                <div class="all-update-top">
+
+                    <span class="all-update-tag job-update-tag">
+                        Job
+                    </span>
+
+                    <span class="all-update-date">
+                        <i class="fa-regular fa-calendar"></i>
+                        Latest Job
+                    </span>
+
+                </div>
+
+                <h2>Bihar New Job Vacancy</h2>
+
+                <p>
+                    Bihar aur India ki latest government job vacancy,
+                    qualification aur apply details.
+                </p>
+
+                <a href="updates/updates-2.html"
+                   class="all-read-more">
+
+                    View Job Details
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </article>
+
+
+
+            <!-- UPDATE 3 -->
+
+            <article class="all-update-card" data-category="scholarship">
+
+                <div class="all-update-top">
+
+                    <span class="all-update-tag scholarship-update-tag">
+                        Scholarship
+                    </span>
+
+                    <span class="all-update-date">
+                        <i class="fa-regular fa-calendar"></i>
+                        Student Update
+                    </span>
+
+                </div>
+
+                <h2>Student Scholarship Update</h2>
+
+                <p>
+                    Students ke liye scholarship application,
+                    eligibility aur important dates.
+                </p>
+
+                <a href="updates/updates-3.html"
+                   class="all-read-more">
+
+                    View Scholarship Details
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </article>
+
+
+
+            <!-- NEW UPDATE EXAMPLE -->
+
+            <article class="all-update-card" data-category="government">
+
+                <div class="all-update-top">
+
+                    <span class="all-update-tag latest-tag">
+                        Important
+                    </span>
+
+                    <span class="all-update-date">
+                        <i class="fa-regular fa-calendar"></i>
+                        New Update
+                    </span>
+
+                </div>
+
+                <h2>New Bihar Important Update</h2>
+
+                <p>
+                    Bihar se judi important information aur latest
+                    official announcement.
+                </p>
+
+                <a href="#"
+                   class="all-read-more">
+
+                    Read More
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </article>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="all-updates-footer">
+
+        <p>
+            © 2026 Bihar Online Updates | All Rights Reserved
+        </p>
+
+    </footer>
+
+<script src="../script.js"></script>
+</body>
+
+</html>

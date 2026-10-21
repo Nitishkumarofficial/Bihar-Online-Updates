@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+.venv*/
+venv/
+env/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+secrets.*
+*.pem
+*.key
+
+# Local databases and runtime files
+*.sqlite3
+*.db
+*.log
+
+# Local backups and editor/OS files
+backups/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

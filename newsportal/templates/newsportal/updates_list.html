@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View All Updates | Bihar Online Updates</title>
+    <link rel="stylesheet" href="{% static 'newsportal/style.css' %}">
+</head>
+<body>
+    <header class="all-updates-header">
+        <div class="all-updates-container">
+            <a href="{% url 'home' %}" class="back-home">← Back to Home</a>
+            <div class="all-updates-title">
+                <span>BIHAR ONLINE UPDATES</span>
+                <h1>View All Updates</h1>
+                <p>Admin se publish ki gayi sabhi active updates yahan dikhengi.</p>
+                <p>{{ total_count }} update{{ total_count|pluralize }} found</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="all-updates-container">
+        <form class="all-updates-search" method="get" action="{% url 'legacy-all-updates' %}">
+            <div class="filter-field">
+                <label for="{{ search_form.q.id_for_label }}">Search updates</label>
+                {{ search_form.q }}
+            </div>
+            <div class="filter-field">
+                <label for="{{ search_form.category.id_for_label }}">Category</label>
+                {{ search_form.category }}
+            </div>
+            <div class="filter-field">
+                <label for="{{ search_form.published_after.id_for_label }}">Published from</label>
+                {{ search_form.published_after }}
+            </div>
+            <div class="filter-field">
+                <label for="{{ search_form.published_before.id_for_label }}">Published until</label>
+                {{ search_form.published_before }}
+            </div>
+            <div class="filter-actions">
+                <button class="btn primary-btn" type="submit">Search / Filter</button>
+                <a class="btn secondary-btn" href="{% url 'legacy-all-updates' %}">Reset Filters</a>
+            </div>
+            {% if search_form.errors %}
+            <div class="filter-errors" role="alert">
+                {% for field in search_form %}
+                    {% for error in field.errors %}<p>{{ error }}</p>{% endfor %}
+                {% endfor %}
+                {% for error in search_form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+            </div>
+            {% endif %}
+        </form>
+
+        {% if filters_active %}
+        <p class="results-count">{{ total_count }} update{{ total_count|pluralize }} found for selected filters.</p>
+        {% endif %}
+        <div class="all-updates-grid">
+            {% for update in updates %}
+            <article class="all-update-card">
+                <div class="all-update-top">
+                    <span class="all-update-tag">{{ update.get_category_display }}</span>
+                    <time class="all-update-date" datetime="{{ update.published_date|date:'Y-m-d' }}">
+                        {{ update.published_date|date:"M j, Y" }}
+                    </time>
+                </div>
+                <h2>{{ update.title }}</h2>
+                <p>{{ update.short_description }}</p>
+                {% if update.last_date %}
+                <p><strong>Last date:</strong> {{ update.last_date|date:"M j, Y" }}</p>
+                {% endif %}
+                <a href="{{ update.get_absolute_url }}" class="all-read-more">
+                    पूरी जानकारी देखें / Read More
+                    <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                </a>
+            </article>
+            {% empty %}
+            <div class="no-results">
+                <h2>No updates found</h2>
+                <p>Abhi koi matching published update nahi hai. Filters reset karein ya baad mein dobara dekhein.</p>
+                <a class="btn primary-btn" href="{% url 'legacy-all-updates' %}">Reset Filters</a>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if page_obj.paginator.num_pages > 1 %}
+        <nav class="pagination" aria-label="Update pages">
+            {% if page_obj.has_previous %}
+                <a href="?{% if querystring %}{{ querystring }}&amp;{% endif %}page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+            <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+                <a href="?{% if querystring %}{{ querystring }}&amp;{% endif %}page={{ page_obj.next_page_number }}">Next</a>
+            {% endif %}
+        </nav>
+        {% endif %}
+    </main>
+    <script src="{% static 'newsportal/script.js' %}"></script>
+</body>
+</html>

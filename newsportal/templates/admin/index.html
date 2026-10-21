@@ -1,0 +1,188 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block bodyclass %}{{ block.super }} dashboard-page{% endblock %}
+{% block breadcrumbs %}{% endblock %}
+{% block nav-sidebar %}{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout">
+    <aside class="dashboard-sidebar" aria-label="CMS navigation">
+        <div class="dashboard-sidebar-heading">Workspace</div>
+        <nav>
+            {% for section in dashboard_navigation %}
+                <div class="dashboard-nav-section">
+                    <h2>{{ section.title }}</h2>
+                    <ul>
+                        {% for link in section.links %}
+                            <li>
+                                <a href="{{ link.url }}"{% if link.label == 'Overview' %} aria-current="page"{% endif %}>
+                                    {{ link.label }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+        </nav>
+    </aside>
+
+    <main class="dashboard-main" id="content-main">
+        <header class="dashboard-header">
+            <div>
+                <p class="dashboard-eyebrow">BIHAR ONLINE UPDATES · CONTENT STUDIO</p>
+                <h1>Overview</h1>
+                <p>Welcome, {{ request.user.get_short_name|default:request.user.username }}. Manage your public updates from here.</p>
+            </div>
+            <a class="dashboard-button dashboard-button-light" href="{% url 'home' %}" target="_blank" rel="noopener noreferrer">
+                Open Public Website
+            </a>
+        </header>
+
+        {% if dashboard_can_view_updates %}
+        <section class="dashboard-section" aria-labelledby="summary-heading">
+            <div class="dashboard-section-heading">
+                <div>
+                    <h2 id="summary-heading">Content summary</h2>
+                    <p>Live totals from saved update records.</p>
+                </div>
+            </div>
+            <div class="dashboard-metrics">
+                <a class="dashboard-metric metric-total" href="{% url 'admin:newsportal_newsupdate_changelist' %}">
+                    <span class="metric-symbol" aria-hidden="true">ALL</span>
+                    <span class="metric-label">Total Updates</span>
+                    <strong>{{ dashboard_stats.total }}</strong>
+                    <span class="metric-hint">All categories</span>
+                </a>
+                <a class="dashboard-metric metric-jobs" href="{% url 'admin:newsportal_newsupdate_changelist' %}?category__exact=job">
+                    <span class="metric-symbol" aria-hidden="true">JOB</span>
+                    <span class="metric-label">Jobs</span>
+                    <strong>{{ dashboard_stats.jobs }}</strong>
+                    <span class="metric-hint">Job updates</span>
+                </a>
+                <a class="dashboard-metric metric-scholarships" href="{% url 'admin:newsportal_newsupdate_changelist' %}?category__exact=scholarship">
+                    <span class="metric-symbol" aria-hidden="true">SCH</span>
+                    <span class="metric-label">Scholarships</span>
+                    <strong>{{ dashboard_stats.scholarships }}</strong>
+                    <span class="metric-hint">Scholarship updates</span>
+                </a>
+                <a class="dashboard-metric metric-schemes" href="{% url 'admin:newsportal_newsupdate_changelist' %}?category__exact=scheme">
+                    <span class="metric-symbol" aria-hidden="true">GOV</span>
+                    <span class="metric-label">Government Schemes</span>
+                    <strong>{{ dashboard_stats.schemes }}</strong>
+                    <span class="metric-hint">Scheme updates</span>
+                </a>
+                <a class="dashboard-metric metric-results" href="{% url 'admin:newsportal_newsupdate_changelist' %}?category__exact=result">
+                    <span class="metric-symbol" aria-hidden="true">RES</span>
+                    <span class="metric-label">Results</span>
+                    <strong>{{ dashboard_stats.results }}</strong>
+                    <span class="metric-hint">Result updates</span>
+                </a>
+                <a class="dashboard-metric metric-admissions" href="{% url 'admin:newsportal_newsupdate_changelist' %}?category__exact=admission">
+                    <span class="metric-symbol" aria-hidden="true">ADM</span>
+                    <span class="metric-label">Admissions</span>
+                    <strong>{{ dashboard_stats.admissions }}</strong>
+                    <span class="metric-hint">Admission updates</span>
+                </a>
+                <a class="dashboard-metric metric-drafts" href="{% url 'admin:newsportal_newsupdate_changelist' %}?is_active__exact=0">
+                    <span class="metric-symbol" aria-hidden="true">DRF</span>
+                    <span class="metric-label">Drafts</span>
+                    <strong>{{ dashboard_stats.drafts }}</strong>
+                    <span class="metric-hint">Hidden from public pages</span>
+                </a>
+                <a class="dashboard-metric metric-published" href="{% url 'admin:newsportal_newsupdate_changelist' %}?is_active__exact=1">
+                    <span class="metric-symbol" aria-hidden="true">PUB</span>
+                    <span class="metric-label">Published Updates</span>
+                    <strong>{{ dashboard_stats.published }}</strong>
+                    <span class="metric-hint">Visible on public pages</span>
+                </a>
+            </div>
+        </section>
+        {% endif %}
+
+        <section class="dashboard-section" aria-labelledby="actions-heading">
+            <div class="dashboard-section-heading">
+                <div>
+                    <h2 id="actions-heading">Quick actions</h2>
+                    <p>Start an update or open a public page.</p>
+                </div>
+            </div>
+            <div class="dashboard-actions">
+                {% if dashboard_can_add_updates %}
+                    <a class="dashboard-button" href="{% url 'admin:newsportal_newsupdate_add' %}?category=job">Add New Job</a>
+                    <a class="dashboard-button" href="{% url 'admin:newsportal_newsupdate_add' %}?category=scholarship">Add Scholarship</a>
+                    <a class="dashboard-button" href="{% url 'admin:newsportal_newsupdate_add' %}?category=scheme">Add Government Scheme</a>
+                    <a class="dashboard-button" href="{% url 'admin:newsportal_newsupdate_add' %}?category=result">Add Result</a>
+                    <a class="dashboard-button" href="{% url 'admin:newsportal_newsupdate_add' %}?category=admission">Add Admission</a>
+                {% endif %}
+                {% if dashboard_can_view_updates %}
+                    <a class="dashboard-button dashboard-button-outline" href="{% url 'admin:newsportal_newsupdate_changelist' %}">View All Updates</a>
+                {% endif %}
+                <a class="dashboard-button dashboard-button-light" href="{% url 'legacy-all-updates' %}" target="_blank" rel="noopener noreferrer">View Public Updates</a>
+            </div>
+        </section>
+
+        <aside class="placement-guide" aria-labelledby="placement-heading">
+            <div class="placement-guide-accent" aria-hidden="true"></div>
+            <div>
+                <h2 id="placement-heading">Where your content appears</h2>
+                <ul>
+                    <li>Checked (published) updates appear in the homepage latest-updates feed and the public View All Updates page. Drafts stay hidden.</li>
+                    <li>The selected category labels the update and filters it in the public updates list. Homepage category links open those filtered results.</li>
+                    <li>Short descriptions appear on update cards. The detail page shows the full description, or the short description if the full description is blank.</li>
+                    <li>Detail pages show supported category-specific fields and an official-link button when a URL is provided.</li>
+                    <li>The lower homepage Jobs, Scholarship, Results and other promotional blocks are static and are not populated from these records. Images and attachments are not supported by this model.</li>
+                </ul>
+            </div>
+        </aside>
+
+        {% if dashboard_can_view_updates %}
+        <section class="dashboard-section recent-section" aria-labelledby="recent-heading">
+            <div class="dashboard-section-heading">
+                <div>
+                    <h2 id="recent-heading">Recently updated</h2>
+                    <p>Your latest saved content.</p>
+                </div>
+                <a href="{% url 'admin:newsportal_newsupdate_changelist' %}">View all</a>
+            </div>
+            <div class="recent-table-wrap">
+                <table class="recent-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Last updated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for update in dashboard_recent_updates %}
+                        <tr>
+                            <td>
+                                {% if perms.newsportal.change_newsupdate %}
+                                    <a href="{% url 'admin:newsportal_newsupdate_change' update.pk %}">{{ update.title }}</a>
+                                {% else %}
+                                    {{ update.title }}
+                                {% endif %}
+                            </td>
+                            <td>{{ update.get_category_display }}</td>
+                            <td>
+                                {% if update.is_active %}
+                                    <span class="status-pill status-published">Published</span>
+                                {% else %}
+                                    <span class="status-pill status-draft">Draft</span>
+                                {% endif %}
+                            </td>
+                            <td>{% if update.updated_at %}{{ update.updated_at|date:"M j, Y" }}{% else %}—{% endif %}</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td class="recent-empty" colspan="4">No updates yet. Use a quick action above to create one.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        {% endif %}
+    </main>
+</div>
+{% endblock %}

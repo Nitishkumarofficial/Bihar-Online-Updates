@@ -1,0 +1,17 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update not found | Bihar Online Updates</title>
+    <link rel="stylesheet" href="{% static 'newsportal/style.css' %}">
+</head>
+<body class="detail-page">
+    <main class="container detail-404">
+        <h1>Update not found</h1>
+        <p>This update may have been removed or is not publicly available.</p>
+        <a class="btn primary-btn" href="{% url 'home' %}">Back to Bihar Online Updates</a>
+    </main>
+</body>
+</html>
