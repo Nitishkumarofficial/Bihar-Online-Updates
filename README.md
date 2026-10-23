@@ -23,19 +23,23 @@ database queries, or form handling. The repository-root `index.html` is a
 static Pages notice; the working website is rendered by Django from
 `newsportal/templates/newsportal/home.html`.
 
-1. Create a persistent PostgreSQL database on Render (or use another
-   PostgreSQL provider) and keep its connection URL private.
-2. In Render, create a Blueprint from this repository. In the web service's
-   Environment settings, set `DATABASE_URL` to the database's private/internal
-   connection URL.
-3. The Blueprint generates `DJANGO_SECRET_KEY` privately and sets production
-   mode. Add any custom host to `DJANGO_ALLOWED_HOSTS` and its HTTPS origin to
-   `DJANGO_CSRF_TRUSTED_ORIGINS`.
-4. After deployment, open the Render service URL. Static assets are collected
+1. Create a Blueprint from this repository and select the
+   `nitishkumarofficial-django-production-deployment` branch. The Blueprint
+   creates a free web service and a free PostgreSQL database; it wires the
+   database connection privately through `fromDatabase`, so no URL or password
+   needs to be pasted into chat or committed.
+2. Review the resources and apply the Blueprint. It generates
+   `DJANGO_SECRET_KEY` privately and sets production mode. Add any custom host
+   to `DJANGO_ALLOWED_HOSTS` and its HTTPS origin to
+   `DJANGO_CSRF_TRUSTED_ORIGINS` in the service's Environment settings.
+3. After deployment, open the Render service URL. Static assets are collected
    during the build and served by WhiteNoise; database migrations run at start.
+4. The included free PostgreSQL plan is for testing only; free databases may
+   expire and their data may be deleted. Do not use it as the only copy of
+   production data. Choose a paid persistent database for production.
 5. If the existing SQLite database contains updates to keep, export and import
    that data into PostgreSQL before directing visitors to the new service.
-   The deployment does not copy, delete, or overwrite `db.sqlite3`.
+   Deployment does not copy, delete, or overwrite `db.sqlite3`.
 
 The Render start command is:
 

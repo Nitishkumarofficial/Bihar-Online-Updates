@@ -14,4 +14,12 @@ services:
       - key: DJANGO_SECURE_SSL_REDIRECT
         value: "True"
       - key: DATABASE_URL
-        sync: false
+        fromDatabase:
+          name: bihar-online-updates-db
+          property: connectionString
+
+databases:
+  - name: bihar-online-updates-db
+    databaseName: bihar_online_updates
+    user: bihar_online_updates
+    plan: free
