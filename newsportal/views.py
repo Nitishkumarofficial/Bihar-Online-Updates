@@ -60,11 +60,7 @@ def _updates_context(request, page_size):
 def home(request):
     context = _updates_context(request, 9)
     context['social_links'] = settings.SOCIAL_LINKS
-    return render(
-        request,
-        'index.html',
-        context,
-    )
+    return render(request, 'newsportal/home.html', context)
 
 
 def all_updates(request):

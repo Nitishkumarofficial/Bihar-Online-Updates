@@ -29,7 +29,7 @@
 
         <div class="container navbar">
 
-            <a href="#" class="logo">
+            <a href="{% url 'home' %}" class="logo">
 
                 <div class="logo-icon">
                     <i class="fa-solid fa-landmark"></i>
@@ -45,14 +45,14 @@
 
             <nav class="nav-menu" id="navMenu">
 
-                <a href="view all updates/all-updates.html">
+                <a href="{% url 'legacy-all-updates' %}">
     View All Updates
 </a>
-                <a href="#updates">Latest Updates</a>
-                <a href="#jobs">Jobs</a>
-                <a href="#scholarship">Scholarship</a>
-                <a href="#results">Result</a>
-                <a href="#schemes">Schemes</a>
+                <a href="{% url 'legacy-all-updates' %}">Latest Updates</a>
+                <a href="{% url 'legacy-all-updates' %}?category=job">Jobs</a>
+                <a href="{% url 'legacy-all-updates' %}?category=scholarship">Scholarship</a>
+                <a href="{% url 'legacy-all-updates' %}?category=result">Result</a>
+                <a href="{% url 'legacy-all-updates' %}?category=scheme">Schemes</a>
 
             </nav>
 
@@ -90,22 +90,40 @@
 
     <!-- ================= SEARCH BOX ================= -->
 
-    <div class="search-box" id="searchBox">
-
-        <div class="container search-container">
-
-            <input
-                type="text"
-                id="searchInput"
-                placeholder="Jobs, Scholarship, Result ya Scheme search karein..."
-            >
-
-            <button id="searchClose">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-
-        </div>
-
+    <div class="search-box{% if filters_active or search_form.errors %} active{% endif %}" id="searchBox">
+        <form class="container search-container" method="get" action="{% url 'home' %}#updates">
+            <div class="filter-field">
+                <label for="{{ search_form.q.id_for_label }}">Search updates</label>
+                {{ search_form.q }}
+            </div>
+            <div class="filter-field">
+                <label for="{{ search_form.category.id_for_label }}">Category</label>
+                {{ search_form.category }}
+            </div>
+            <div class="filter-field">
+                <label for="{{ search_form.published_after.id_for_label }}">Published from</label>
+                {{ search_form.published_after }}
+            </div>
+            <div class="filter-field">
+                <label for="{{ search_form.published_before.id_for_label }}">Published until</label>
+                {{ search_form.published_before }}
+            </div>
+            <div class="filter-actions">
+                <button class="btn primary-btn" type="submit">Search / Filter</button>
+                <a class="btn secondary-btn" href="{% url 'home' %}#updates">Reset Filters</a>
+                <button class="search-close" id="searchClose" type="button" aria-label="Close filters">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            {% if search_form.errors %}
+            <div class="filter-errors" role="alert">
+                {% for field in search_form %}
+                    {% for error in field.errors %}<p>{{ error }}</p>{% endfor %}
+                {% endfor %}
+                {% for error in search_form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+            </div>
+            {% endif %}
+        </form>
     </div>
 
 
@@ -163,7 +181,7 @@
 
                 <div class="hero-buttons">
 
-                    <a href="#updates" class="btn primary-btn">
+                    <a href="{% url 'legacy-all-updates' %}" class="btn primary-btn">
                         <i class="fa-solid fa-bell"></i>
                         Latest Updates
                     </a>
@@ -286,7 +304,7 @@
             <div class="category-grid">
 
 
-                <a href="#" class="category-card">
+                <a href="{% url 'legacy-all-updates' %}?category=job" class="category-card">
 
                     <div class="category-icon">
                         💼
@@ -299,7 +317,7 @@
                 </a>
 
 
-                <a href="#" class="category-card">
+                <a href="{% url 'legacy-all-updates' %}?category=scholarship" class="category-card">
 
                     <div class="category-icon">
                         🎓
@@ -312,7 +330,7 @@
                 </a>
 
 
-                <a href="#" class="category-card">
+                <a href="{% url 'legacy-all-updates' %}?category=result" class="category-card">
 
                     <div class="category-icon">
                         📊
@@ -325,7 +343,7 @@
                 </a>
 
 
-                <a href="#" class="category-card">
+                <a href="{% url 'legacy-all-updates' %}?category=other" class="category-card">
 
                     <div class="category-icon">
                         📝
@@ -338,7 +356,7 @@
                 </a>
 
 
-                <a href="#" class="category-card">
+                <a href="{% url 'legacy-all-updates' %}?category=admission" class="category-card">
 
                     <div class="category-icon">
                         🏫
@@ -351,7 +369,7 @@
                 </a>
 
 
-                <a href="#" class="category-card">
+                <a href="{% url 'legacy-all-updates' %}?category=scheme" class="category-card">
 
                     <div class="category-icon">
                         📜
@@ -364,7 +382,7 @@
                 </a>
 
 
-                <a href="#" class="category-card">
+                <a href="{% url 'legacy-all-updates' %}?category=other" class="category-card">
 
                     <div class="category-icon">
                         🪪
@@ -377,7 +395,7 @@
                 </a>
 
 
-                <a href="#" class="category-card">
+                <a href="{% url 'legacy-all-updates' %}?category=other" class="category-card">
 
                     <div class="category-icon">
                         📱
@@ -410,6 +428,9 @@
                 <h2>Latest Updates</h2>
 
                 <p>Bihar ki important aur latest updates</p>
+                {% if filters_active %}
+                    <p class="results-count">{{ total_count }} update{{ total_count|pluralize }} found</p>
+                {% endif %}
 
             </div>
 
@@ -421,8 +442,7 @@
                         {{ update.get_category_display }}
                     </div>
 
-                    <h3>{{ update.title }}</h3>
-
+                    <h3><a href="{{ update.get_absolute_url }}">{{ update.title }}</a></h3>
                     <p>{{ update.short_description }}</p>
 
                     <div class="card-footer">
@@ -440,101 +460,33 @@
                         </a>
                         {% endif %}
                     </div>
+                    <a class="read-detail-link" href="{{ update.get_absolute_url }}">पूरी जानकारी देखें / Read More</a>
                 </article>
                 {% empty %}
-                <article class="update-card searchable">
-
-                    <div class="update-tag">
-                        Latest
-                    </div>
-
-                    <h3>Bihar Latest Government Update</h3>
-
-                    <p>
-                        Bihar se judi latest government information aur
-                        important announcement.
-                    </p>
-
-                    <div class="card-footer">
-
-                        <span>
-                            <i class="fa-regular fa-calendar"></i>
-                            Today
-                        </span>
-
-                        <a href="updates/updates-1.html">
-                            Read More
-                            <i class="fa-solid fa-arrow-right"></i>
-                        </a>
-
-                    </div>
-
-                </article>
-
-                <article class="update-card searchable">
-
-                    <div class="update-tag job-tag">
-                        Job
-                    </div>
-
-                    <h3>Bihar New Job Vacancy</h3>
-
-                    <p>
-                        Bihar aur India ki latest government job vacancy
-                        information.
-                    </p>
-
-                    <div class="card-footer">
-
-                        <span>
-                            <i class="fa-regular fa-calendar"></i>
-                            Latest
-                        </span>
-
-                        <a href="updates/updates-2.html">
-                            Read More
-                            <i class="fa-solid fa-arrow-right"></i>
-                        </a>
-
-                    </div>
-
-                </article>
-
-
-                <article class="update-card searchable">
-
-                    <div class="update-tag scholarship-tag">
-                        Scholarship
-                    </div>
-
-                    <h3>Student Scholarship Update</h3>
-
-                    <p>
-                        Students ke liye scholarship apply process aur
-                        important dates.
-                    </p>
-
-                    <div class="card-footer">
-
-                        <span>
-                            <i class="fa-regular fa-calendar"></i>
-                            Update
-                        </span>
-
-                        <a href="updates/updates-3.html">
-                            Read More
-                            <i class="fa-solid fa-arrow-right"></i>
-                        </a>
-
-                    </div>
-                </article>
+                <div class="no-results">
+                    <h3>No updates found</h3>
+                    <p>Try different keywords or filters, or reset your filters to see all published updates.</p>
+                    <a class="btn primary-btn" href="{% url 'home' %}#updates">Reset Filters</a>
+                </div>
                 {% endfor %}
             </div>
+
+            {% if page_obj.paginator.num_pages > 1 %}
+            <nav class="pagination" aria-label="Update pages">
+                {% if page_obj.has_previous %}
+                    <a href="?{% if querystring %}{{ querystring }}&amp;{% endif %}page={{ page_obj.previous_page_number }}#updates" aria-label="Previous page">Previous</a>
+                {% endif %}
+                <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                {% if page_obj.has_next %}
+                    <a href="?{% if querystring %}{{ querystring }}&amp;{% endif %}page={{ page_obj.next_page_number }}#updates" aria-label="Next page">Next</a>
+                {% endif %}
+            </nav>
+            {% endif %}
 
 
             <div class="center-btn">
 
-                <a href="view all updates/all-updates.html" class="btn primary-btn">
+                <a href="{% url 'legacy-all-updates' %}" class="btn primary-btn">
     View All Updates
 </a>
 
@@ -589,7 +541,7 @@
 
                     </div>
 
-                    <a href="all-updates.html" class="job-btn">
+                    <a href="{% url 'legacy-all-updates' %}?category=job" class="job-btn">
                         View Details
                     </a>
 
@@ -620,7 +572,7 @@
 
                     </div>
 
-                    <a href="all-updates.html" class="job-btn">
+                    <a href="{% url 'legacy-all-updates' %}?category=job" class="job-btn">
                         View Details
                     </a>
 
@@ -651,7 +603,7 @@
 
                     </div>
 
-                    <a href="all-updates.html" class="job-btn">
+                    <a href="{% url 'legacy-all-updates' %}?category=job" class="job-btn">
                         View Details
                     </a>
 
@@ -697,7 +649,7 @@
                         Bihar students ke liye available scholarship updates.
                     </p>
 
-                    <a href="#">
+                    <a href="{% url 'legacy-all-updates' %}?category=scholarship">
                         View Details →
                     </a>
 
@@ -716,7 +668,7 @@
                         Higher education students ke liye scholarship details.
                     </p>
 
-                    <a href="#">
+                    <a href="{% url 'legacy-all-updates' %}?category=scholarship">
                         View Details →
                     </a>
 
@@ -735,7 +687,7 @@
                         Merit students ke liye financial support schemes.
                     </p>
 
-                    <a href="#">
+                    <a href="{% url 'legacy-all-updates' %}?category=scholarship">
                         View Details →
                     </a>
 
@@ -773,7 +725,7 @@
                 </div>
 
 
-                <a href="#" class="btn light-btn">
+                <a href="{% url 'legacy-all-updates' %}?category=result" class="btn light-btn">
                     Check Results
                 </a>
 
@@ -818,7 +770,7 @@
                         Students ke liye Bihar government ki schemes.
                     </p>
 
-                    <a href="#">
+                    <a href="{% url 'legacy-all-updates' %}?category=scheme">
                         View Schemes →
                     </a>
 
@@ -837,7 +789,7 @@
                         Mahilaon ke liye government support schemes.
                     </p>
 
-                    <a href="#">
+                    <a href="{% url 'legacy-all-updates' %}?category=scheme">
                         View Schemes →
                     </a>
 
@@ -856,7 +808,7 @@
                         Farmers ke liye important Bihar schemes.
                     </p>
 
-                    <a href="#">
+                    <a href="{% url 'legacy-all-updates' %}?category=scheme">
                         View Schemes →
                     </a>
 
@@ -893,7 +845,7 @@
             </div>
 
 
-            <a href="#" class="youtube-btn">
+            <a href="{{ social_links.youtube }}" class="youtube-btn">
 
                 <i class="fa-brands fa-youtube"></i>
 
@@ -925,7 +877,7 @@
 
             <div class="social-buttons">
 
-                <a href="#" class="social youtube">
+                <a href="{{ social_links.youtube }}" class="social youtube">
 
                     <i class="fa-brands fa-youtube"></i>
 
@@ -934,7 +886,7 @@
                 </a>
 
 
-                <a href="#" class="social instagram">
+                <a href="{{ social_links.instagram }}" class="social instagram">
 
                     <i class="fa-brands fa-instagram"></i>
 
@@ -943,7 +895,7 @@
                 </a>
 
 
-                <a href="#" class="social telegram">
+                <a href="{{ social_links.telegram }}" class="social telegram">
 
                     <i class="fa-brands fa-telegram"></i>
 
@@ -952,11 +904,11 @@
                 </a>
 
 
-                <a href="#" class="social whatsapp">
+                <a href="{{ social_links.whatsapp }}" class="social whatsapp">
 
                     <i class="fa-brands fa-whatsapp"></i>
 
-                    WhatsApp
+                    Join WhatsApp Channel
 
                 </a>
 
@@ -993,11 +945,9 @@
 
                 <a href="#home">Home</a>
 
-                <a href="#jobs">Latest Jobs</a>
-
-                <a href="#scholarship">Scholarship</a>
-
-                <a href="#results">Results</a>
+                <a href="{% url 'legacy-all-updates' %}?category=job">Latest Jobs</a>
+                <a href="{% url 'legacy-all-updates' %}?category=scholarship">Scholarship</a>
+                <a href="{% url 'legacy-all-updates' %}?category=result">Results</a>
 
                 <a href="/admin/">Admin Login</a>
 
@@ -1008,13 +958,13 @@
 
                 <h3>Information</h3>
 
-                <a href="#">About Us</a>
+                <a href="{% url 'site-info' 'about' %}">About Us</a>
 
-                <a href="#">Contact Us</a>
+                <a href="{% url 'site-info' 'contact' %}">Contact Us</a>
 
-                <a href="#">Privacy Policy</a>
+                <a href="{% url 'site-info' 'privacy' %}">Privacy Information</a>
 
-                <a href="#">Disclaimer</a>
+                <a href="{% url 'site-info' 'disclaimer' %}">Disclaimer</a>
 
             </div>
 

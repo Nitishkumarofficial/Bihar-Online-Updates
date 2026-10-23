@@ -9,6 +9,21 @@ from .models import NewsUpdate
 
 
 class HomePageTests(TestCase):
+    def test_homepage_renders_django_template_and_static_assets(self):
+        response = self.client.get(reverse('home'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'newsportal/home.html')
+        self.assertRegex(
+            response.content.decode(),
+            r'/static/newsportal/style\.[\w]+\.css',
+        )
+        self.assertRegex(
+            response.content.decode(),
+            r'/static/newsportal/script\.[\w]+\.js',
+        )
+        self.assertNotContains(response, '{% load static %}')
+
     def test_homepage_shows_active_updates_newest_first(self):
         older_update = NewsUpdate.objects.create(
             title='Older active update',
@@ -335,7 +350,10 @@ class HomePageTests(TestCase):
         ):
             response = self.client.get(reverse(route_name))
             self.assertEqual(response.status_code, 200)
-            self.assertContains(response, '/static/newsportal/style.css')
+            self.assertRegex(
+                response.content.decode(),
+                r'/static/newsportal/style\.[\w]+\.css',
+            )
 
         admin_response = self.client.get(reverse('admin:index'))
         self.assertEqual(admin_response.status_code, 302)

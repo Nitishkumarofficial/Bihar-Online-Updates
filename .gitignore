@@ -21,6 +21,7 @@ secrets.*
 *.sqlite3
 *.db
 *.log
+staticfiles/
 
 # Local backups and editor/OS files
 backups/
